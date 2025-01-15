@@ -1,0 +1,274 @@
+openapi: 3.0.1
+info:
+  contact:
+    name: Sonatype Community Maintainers
+    url: https://github.com/sonatype-nexus-community
+  description: "This documents the available APIs into [Sonatype OSS Index](https://ossindex.sonatype.org/)\
+    \ - API Version: 1-SNAPSHOT (be72c8343baab38a8c598d28dafc78003dce81db)."
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://ossindex.sonatype.org/tos
+  title: Sonatype OSS Index
+  version: "2024.323"
+servers:
+- url: https://ossindex.sonatype.org
+tags:
+- name: Component vulnerability reports
+- name: Version
+paths:
+  /api/v3/authorized/component-report:
+    post:
+      operationId: post_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ComponentReportRequest'
+          application/vnd.ossindex.component-report-request.v1+json:
+            schema:
+              $ref: '#/components/schemas/ComponentReportRequest'
+        required: false
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ComponentReport'
+                type: array
+            application/vnd.ossindex.component-report-request.v1+json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ComponentReport'
+                type: array
+          description: Vulnerability report for components
+        "400":
+          content: {}
+          description: Missing coordinates version
+        "429":
+          content: {}
+          description: Too many requests
+      security:
+      - basicAuth: []
+      - apiToken: []
+      summary: Request vulnerability reports for components
+      tags:
+      - Component vulnerability reports
+      x-codegen-request-body-name: body
+  /api/v3/component-report:
+    post:
+      operationId: post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ComponentReportRequest'
+          application/vnd.ossindex.component-report-request.v1+json:
+            schema:
+              $ref: '#/components/schemas/ComponentReportRequest'
+        required: false
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ComponentReport'
+                type: array
+            application/vnd.ossindex.component-report-request.v1+json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ComponentReport'
+                type: array
+          description: Vulnerability report for components
+        "400":
+          content: {}
+          description: Missing coordinates version
+        "429":
+          content: {}
+          description: Too many requests
+      security:
+      - basicAuth: []
+      - apiToken: []
+      summary: Request vulnerability reports for components
+      tags:
+      - Component vulnerability reports
+      x-codegen-request-body-name: body
+  /api/v3/version:
+    get:
+      operationId: get
+      responses:
+        "200":
+          content: {}
+          description: Version information
+        "429":
+          content: {}
+          description: Too many requests
+      summary: Get service version information
+      tags:
+      - Version
+components:
+  schemas:
+    ComponentReport:
+      description: Component vulnerability report
+      example:
+        reference: https://openapi-generator.tech
+        coordinates: https://openapi-generator.tech
+        description: description
+        vulnerabilities:
+        - cwe: cwe
+          reference: https://openapi-generator.tech
+          cvssVector: cvssVector
+          externalReferences:
+          - https://openapi-generator.tech
+          - https://openapi-generator.tech
+          cve: cve
+          cvssScore: 0.8008282
+          displayName: displayName
+          versionRanges:
+          - versionRanges
+          - versionRanges
+          description: description
+          id: id
+          title: title
+        - cwe: cwe
+          reference: https://openapi-generator.tech
+          cvssVector: cvssVector
+          externalReferences:
+          - https://openapi-generator.tech
+          - https://openapi-generator.tech
+          cve: cve
+          cvssScore: 0.8008282
+          displayName: displayName
+          versionRanges:
+          - versionRanges
+          - versionRanges
+          description: description
+          id: id
+          title: title
+      properties:
+        coordinates:
+          description: Component coordinates as package-url
+          format: uri
+          type: string
+        description:
+          description: Component description
+          type: string
+        reference:
+          description: Component details reference
+          format: uri
+          type: string
+        vulnerabilities:
+          description: Vulnerabilities recorded for component
+          items:
+            $ref: '#/components/schemas/ComponentReportVulnerability'
+          type: array
+          xml:
+            wrapped: true
+      type: object
+    ComponentReportRequest:
+      description: Component vulnerability report request
+      example:
+        coordinates:
+        - https://openapi-generator.tech
+        - https://openapi-generator.tech
+      properties:
+        coordinates:
+          description: One or more component coordinates as package-url
+          items:
+            format: uri
+            type: string
+            xml:
+              name: coordinates
+          type: array
+          xml:
+            wrapped: true
+      required:
+      - coordinates
+      type: object
+    ComponentReportVulnerability:
+      description: Component vulnerability
+      example:
+        cwe: cwe
+        reference: https://openapi-generator.tech
+        cvssVector: cvssVector
+        externalReferences:
+        - https://openapi-generator.tech
+        - https://openapi-generator.tech
+        cve: cve
+        cvssScore: 0.8008282
+        displayName: displayName
+        versionRanges:
+        - versionRanges
+        - versionRanges
+        description: description
+        id: id
+        title: title
+      properties:
+        cve:
+          description: CVE
+          type: string
+        cvssScore:
+          description: CVSS score
+          format: float
+          type: number
+        cvssVector:
+          description: CVSS vector
+          type: string
+        cwe:
+          description: CWE
+          type: string
+        description:
+          description: Vulnerability description
+          type: string
+        displayName:
+          description: Display name
+          type: string
+        externalReferences:
+          description: External references related to the vulnerability
+          items:
+            format: uri
+            type: string
+          type: array
+        id:
+          description: Public identifier
+          type: string
+        reference:
+          description: Vulnerability details reference
+          format: uri
+          type: string
+        title:
+          description: Vulnerability title
+          type: string
+        versionRanges:
+          description: Affected version ranges
+          items:
+            type: string
+          type: array
+      type: object
+    Version:
+      description: Version
+      properties:
+        buildNotes:
+          description: Build notes
+          type: string
+        buildTag:
+          description: Build tag
+          type: string
+        buildTimestamp:
+          description: Build timestamp
+          type: string
+        version:
+          description: Version
+          type: string
+      type: object
+  securitySchemes:
+    apiToken:
+      description: Use email address for the username and API token for the password.
+      scheme: basic
+      type: http
+    basicAuth:
+      scheme: basic
+      type: http
+x-original-swagger-version: "2.0"
